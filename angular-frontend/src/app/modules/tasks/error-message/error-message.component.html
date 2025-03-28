@@ -1,0 +1,9 @@
+<p *ngIf="control?.touched && control?.invalid" class="error-message">
+  <ng-container *ngIf="control?.hasError('required')">
+    {{ fieldName }} is required.
+  </ng-container>
+
+  <ng-container *ngIf="control?.hasError('minlength')">
+    {{ fieldName }} must have 3 characters
+  </ng-container>
+</p>
