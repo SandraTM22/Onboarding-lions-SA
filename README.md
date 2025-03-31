@@ -16,7 +16,7 @@ Antes de comenzar, asegúrate de tener instalados en tu sistema:
 ### 1️⃣ Clonar el repositorio
 Ejecuta el siguiente comando para clonar el proyecto:
 ```bash
-git clone git@github.com:campus-CodeArts/Onboarding-SymfAngular.git
+git clone git@github.com:SandraTM22/Onboarding-lions-SA.git
 cd Onboarding-SymfAngular
 ```
 
