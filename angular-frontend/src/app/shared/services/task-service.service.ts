@@ -1,18 +1,18 @@
 // src/app/task.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Task } from '../interfaces/task';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TaskService {
   private apiUrl = 'http://localhost:8000/api/tasks'; //Apunta al backend(entrada de los datos)
 
   constructor(private http: HttpClient) {}
 
-  //http.get<Task[]>(this.apiUrl): Llama a la URL de la API (this.apiUrl), 
+  //http.get<Task[]>(this.apiUrl): Llama a la URL de la API (this.apiUrl),
   //que devuelve todas las tareas en formato JSON. El tipo Task[] nos dice que esperamos una lista de tareas.
 
   //Observable:  emitirá las tareas cuando la petición se complete. Esto permite trabajar con los datos de manera asíncrona
@@ -24,13 +24,28 @@ export class TaskService {
   addTask(task: Task): Observable<Task> {
     return this.http.post<Task>(this.apiUrl, task);
   }
-  
+
   updateTask(task: Task): Observable<Task> {
     return this.http.put<Task>(`${this.apiUrl}/${task.id}`, task);
   }
-  
 
   deleteTask(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  // Función para filtrar segun el valor de search
+  searchTasks(searchTerm: string): Observable<Task[]> {
+    if (!searchTerm) {
+      return this.getTasks();
+    }
+    // Filtra las tareas que coinciden con el término de búsqueda
+    return this.getTasks().pipe(
+      //this.getTasks() devuelve un Observable, por lo que hay que transformar los datos usando map().
+      map((tasks) =>
+        tasks.filter((task) =>
+          task.title.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      )
+    );
   }
 }

@@ -15,11 +15,7 @@
   <h2 class="text-xl font-bold text-teal-800 my-5">Task List</h2>
 
   <form class="space-y-2 mb-8">
-
-    <app-error-message
-    [control]="title"
-    fieldName="Title"
-    ></app-error-message>
+    <app-error-message [control]="title" fieldName="Title"></app-error-message>
 
     <input
       #taskInput
@@ -54,38 +50,46 @@
   </form>
 
   <div>
-
-    <!-- Filtro para busqueda -->  
-    <form class="max-w-md mx-auto">   
-      <label for="default-search" class="mb-2 text-teal-800 sr-only">Search</label>
+    <!-- Filtro para busqueda -->
+    <form class="max-w-md mx-auto">
+      <label for="default-search" class="mb-2 text-teal-800 sr-only"
+        >Search</label
+      >
       <!-- Lupa -->
       <div class="relative">
-        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-          <svg class="w-4 h-4 text-teal-950" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+        <div
+          class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+        >
+          <svg
+            class="w-4 h-4 text-teal-950"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+            />
           </svg>
         </div>
-        
+
         <input
           type="search"
           id="default-search"
           class="block !w-full !p-4 !ps-10 text-sm input-class"
           placeholder="Search tasks..."
           required
+          [formControl]="searchControl"
         />
-        <button
-          type="submit"
-          class="btn-teal absolute end-2.5 bottom-2.5 text-sm px-4 py-2"
-        >
-          Search
-        </button>
       </div>
     </form>
-    
 
-
-    <ul *ngIf="tasks.length > 0; else noTasks" class="mt-5">
-      <li *ngFor="let task of tasks" class="flex justify-between p-1">
+    <ul *ngIf="filteredTasks.length > 0; else noTasks" class="mt-5">
+      <li *ngFor="let task of filteredTasks" class="flex justify-between p-1">
         <span [class.completed]="task.completed" (click)="toggleTask(task)">
           {{ task.title }}
         </span>
