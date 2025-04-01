@@ -1,1 +1,28 @@
 <router-outlet />
+
+<button
+  (click)="showSuccessToast()"
+  class="bg-green-700 btn-toast"
+>  
+Show Success
+</button>
+<button
+  (click)="showErrorToast()"
+  class="bg-red-700 btn-toast"
+>
+  Show Error
+</button>
+<button
+  (click)="showInfoToast()"
+  class="bg-blue-700 btn-toast"
+>
+  Show Info
+</button>
+<button
+  (click)="showWarnToast()"
+  class="bg-yellow-500 btn-toast"
+>
+  Show Warning
+</button>
+
+<app-toast></app-toast>

@@ -14,7 +14,7 @@
 <main class="p-2 flex flex-col min-h-screen w-2/3 mx-auto">
   <h2 class="text-xl font-bold text-teal-800 my-5">Task List</h2>
 
-  <form class="space-y-2 mb-8">
+  <form class="space-y-2 mb-8" (ngSubmit)="addTask(taskInput.value)">
     <app-error-message [control]="title" fieldName="Title"></app-error-message>
 
     <input
@@ -38,6 +38,7 @@
     />
 
     <button
+      type="submit"
       class="btn-teal"
       (click)="addTask(taskInput.value); taskInput.value = ''"
       [disabled]="title.invalid || describe.invalid"
@@ -80,7 +81,7 @@
         <input
           type="search"
           id="default-search"
-          class="block !w-full !p-4 !ps-10 text-sm input-class"
+          class="block !w-full !p-4 !ps-10 text-sm input-class mb-4"
           placeholder="Search tasks..."
           required
           [formControl]="searchControl"
