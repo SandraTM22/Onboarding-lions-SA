@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { TaskService } from '../../shared/services/task-service.service';
 import { Task } from '../../shared/interfaces/task';
 import { RouterModule } from '@angular/router';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from './error-message/error-message.component';
 import { debounceTime, switchMap, map } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-tasks',
+  standalone: true,
   imports: [
-    CommonModule,
     RouterModule,
     ReactiveFormsModule,
     ErrorMessageComponent,
+    CommonModule
   ],
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.css'],
