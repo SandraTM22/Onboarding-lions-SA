@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TaskRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
@@ -13,7 +14,9 @@ class Task
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: false)]
+    #[Assert\NotBlank(message: "El título no puede estar vacío.")]
+    #[Assert\Length(min: 3, minMessage: "El título no puede tener menos de caracteres.")]
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
