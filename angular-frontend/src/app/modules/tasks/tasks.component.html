@@ -26,6 +26,22 @@
     />
 
     <app-error-message
+  [control]="describe"
+  fieldName="Describe"
+></app-error-message>
+
+<textarea
+  #taskInput
+  [formControl]="describe"
+  placeholder="Describe your task..."
+  class="input-class h-40"
+  maxlength="255"
+  rows="4"
+  required
+></textarea>
+
+
+    <!-- <app-error-message
       [control]="describe"
       fieldName="Describe"
     ></app-error-message>
@@ -35,7 +51,7 @@
       [formControl]="describe"
       placeholder="Describe your task..."
       class="input-class h-40"
-    />
+    /> -->
 
     <button
       type="submit"

@@ -29,14 +29,17 @@ class TaskController extends AbstractController
     {
         $params = json_decode($request->getContent(), true);
         $task = new Task();
-        $task->setTitle($params['title'] ?? 'Untitled');
+        $task->setTitle($params['title']);
+        $task->setDescription($params['description']);
         $task->setCompleted($params['completed'] ?? false);
         $em->persist($task);
         $em->flush();
         return $this->json([
             'id' => $task->getId(),
             'title' => $task->getTitle(),
-            'completed' => $task->getCompleted()
+            'description' => $task->getDescription(),
+            'completed' => $task->getCompleted(),
+            'createdAt' => $task->getCreatedAt()?->format('Y-m-d h:i:s')            
         ]);
     }
 
