@@ -19,7 +19,9 @@ class TaskController extends AbstractController
         $data = array_map(fn($task) => [
             'id' => $task->getId(),
             'title' => $task->getTitle(),
-            'completed' => $task->getCompleted()
+            'description' => $task->getDescription(),
+            'completed' => $task->getCompleted(),
+            'createdAt' => $task->getCreatedAt()?->format('Y-m-d h:i:s')
         ], $tasks);
         return $this->json($data);
     }
