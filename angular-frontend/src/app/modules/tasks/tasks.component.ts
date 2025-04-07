@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TaskService } from '../../shared/services/task-service.service';
 import { Task } from '../../shared/interfaces/task';
 import { RouterModule } from '@angular/router';
@@ -6,7 +6,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from './error-message/error-message.component';
 import { debounceTime, switchMap, map } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
-
+import { ToastComponent } from '../../shared/toast/toast.component';
 
 @Component({
   selector: 'app-tasks',
@@ -15,12 +15,15 @@ import { CommonModule } from '@angular/common';
     RouterModule,
     ReactiveFormsModule,
     ErrorMessageComponent,
-    CommonModule
+    CommonModule,
+    ToastComponent,
   ],
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.css'],
 })
 export class TasksComponent implements OnInit {
+  @ViewChild(ToastComponent) toast: ToastComponent | undefined; // Accede al componente del Toast y se inicializa en indefinido
+
   //Validaciones
   title = new FormControl('', [Validators.required, Validators.minLength(3)]);
   describe = new FormControl('', Validators.required);
@@ -44,10 +47,14 @@ export class TasksComponent implements OnInit {
       .pipe(
         debounceTime(300), // Espera 300ms después del último cambio
         map((searchTerm) => searchTerm || ''), //Transforma el termino, si es null lo reemplaza con ''
-        switchMap((searchTerm) => //Cada vez que cambie el valor de búsqueda), se cancela la búsqueda anterior y emite una nueva
-          this.taskService.searchTasks(searchTerm ?? '')) // Llama al método de búsqueda
+        switchMap(
+          (
+            searchTerm //Cada vez que cambie el valor de búsqueda), se cancela la búsqueda anterior y emite una nueva
+          ) => this.taskService.searchTasks(searchTerm ?? '')
+        ) // Llama al método de búsqueda
       )
-      .subscribe( //cuando la accion esta completa (detectar los cambios)
+      .subscribe(
+        //cuando la accion esta completa (detectar los cambios)
         (tasks) => {
           this.filteredTasks = tasks; // Actualiza las tareas filtradas en el componente
         },
@@ -64,12 +71,26 @@ export class TasksComponent implements OnInit {
       (error) => console.error('Error fetching tasks:', error)
     );
   }
- 
-  addTask(title: string): void {
+
+  addTask(): void {
     if (this.title.invalid || this.describe.invalid) return;
 
-    const newTask: Task = { id: 0, title, completed: false };
-    this.taskService.addTask(newTask).subscribe(() => this.loadTasks());
+    const newTask: Task = {
+      id: 0,
+      title: this.title.value!,
+      description: this.describe.value!,
+      completed: false,
+    };
+    console.log('Enviando tarea:', newTask); // Verifica el objeto que se envía
+
+    this.taskService.addTask(newTask).subscribe(() => {
+      this.loadTasks();
+      this.toast?.toastService.addToast(
+        'success',
+        'task added successfully',
+        3000
+      ); // '?' Accede solo si `toast` está disponible
+    });
   }
 
   toggleTask(task: Task): void {
@@ -78,6 +99,18 @@ export class TasksComponent implements OnInit {
   }
 
   deleteTask(id: number): void {
-    this.taskService.deleteTask(id).subscribe(() => this.loadTasks());
+    this.taskService.deleteTask(id).subscribe(() => {
+      this.loadTasks(),
+        this.toast?.toastService.addToast(
+          'error',
+          'Task removed',
+          3000
+        );
+    });
+  }
+
+  resetForm(): void {
+    this.title.reset();
+    this.describe.reset();
   }
 }

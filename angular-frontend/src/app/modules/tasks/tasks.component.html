@@ -1,24 +1,23 @@
-<header class="flex items-center bg-teal-950 text-white">
-  <h1 class="h-24 text-2xl p-1 flex-grow text-center content-center">
+<header class="flex items-center text-cyan-950 font-extrabold">
+  <h1 class="h-24 text-3xl p-1 flex-grow text-center content-center">
     Task Page
   </h1>
 
   <button
     routerLink="/"
-    class="mr-4 p-2 rounded-lg hover:bg-teal-600 border-1 border-white"
+    class="mr-4 p-2 rounded-lg hover:bg-cyan-600 border-1 border-cyan-950"
   >
     Back
   </button>
 </header>
 
 <main class="p-2 flex flex-col min-h-2/3 w-2/3 mx-auto">
-  <h2 class="text-xl font-bold text-teal-800 my-5">Task List</h2>
+  <h2 class="text-xl font-bold text-cyan-800 my-5">Task List</h2>
 
-  <form class="space-y-2 mb-8" (ngSubmit)="addTask(taskInput.value)">
+  <form class="space-y-2 mb-8" (ngSubmit)="addTask()">
     <app-error-message [control]="title" fieldName="Title"></app-error-message>
 
     <input
-      #taskInput
       type="text"
       [formControl]="title"
       placeholder="Title..."
@@ -26,37 +25,23 @@
     />
 
     <app-error-message
-  [control]="describe"
-  fieldName="Describe"
-></app-error-message>
-
-<textarea
-  #taskInput
-  [formControl]="describe"
-  placeholder="Describe your task..."
-  class="input-class h-40"
-  maxlength="255"
-  rows="4"
-  required
-></textarea>
-
-
-    <!-- <app-error-message
       [control]="describe"
       fieldName="Describe"
     ></app-error-message>
-    <input
-      #taskInput
-      type="text"
+
+    <textarea
       [formControl]="describe"
       placeholder="Describe your task..."
       class="input-class h-40"
-    /> -->
+      maxlength="255"
+      rows="4"
+      required
+    ></textarea>
 
     <button
       type="submit"
-      class="btn-teal"
-      (click)="addTask(taskInput.value); taskInput.value = ''"
+      class="btn-cyan"
+      (click)="addTask(); resetForm()"
       [disabled]="title.invalid || describe.invalid"
       [ngClass]="{
         'opacity-50 cursor-not-allowed': title.invalid || describe.invalid
@@ -69,7 +54,7 @@
   <div>
     <!-- Filtro para busqueda -->
     <form class="max-w-md mx-auto">
-      <label for="default-search" class="mb-2 text-teal-800 sr-only"
+      <label for="default-search" class="mb-2 text-cyan-800 sr-only"
         >Search</label
       >
       <!-- Lupa -->
@@ -78,7 +63,7 @@
           class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
         >
           <svg
-            class="w-4 h-4 text-teal-950"
+            class="w-4 h-4 text-cyan-950"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -121,3 +106,6 @@
     <p class="cursor-default">Nothing here...</p>
   </ng-template>
 </main>
+
+
+<app-toast></app-toast>

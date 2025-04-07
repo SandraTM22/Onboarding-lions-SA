@@ -22,7 +22,8 @@ export class TaskService {
   }
 
   addTask(task: Task): Observable<Task> {
-    return this.http.post<Task>(this.apiUrl, task);
+    console.log('Enviando tarea:', task);  // Asegúrate de que la tarea se está enviando correctamente
+    return this.http.post<Task>(this.apiUrl, task)    
   }
 
   updateTask(task: Task): Observable<Task> {
