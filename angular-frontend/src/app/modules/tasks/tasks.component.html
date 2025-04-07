@@ -11,7 +11,7 @@
   </button>
 </header>
 
-<main class="p-2 flex flex-col min-h-2/3 w-2/3 mx-auto">
+<main class="p-2 flex flex-col min-h-2/3 max-w-4/5 mx-auto">
   <h2 class="text-xl font-bold text-cyan-800 my-5">Task List</h2>
 
   <form class="space-y-2 mb-8" (ngSubmit)="addTask()">
@@ -90,22 +90,113 @@
       </div>
     </form>
 
-    <ul *ngIf="filteredTasks.length > 0; else noTasks" class="mt-5">
+    <!-- <ul *ngIf="filteredTasks.length > 0; else noTasks" class="mt-5">
       <li *ngFor="let task of filteredTasks" class="flex justify-between p-1">
         <span [class.completed]="task.completed" (click)="toggleTask(task)">
           {{ task.title }}
         </span>
         <button (click)="deleteTask(task.id)" class="mx-2 cursor-pointer">
-          ❌
+          X
         </button>
       </li>
-    </ul>
+    </ul> -->
+
+    <!-- --------------------------------------------------- -->
+
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg mb-4">
+      <table
+        *ngIf="filteredTasks.length > 0; else noTasks"
+       
+        class="w-full text-sm text-left rtl:text-right"
+      >
+        <thead class="text-xs text-white uppercase bg-cyan-900">
+          <tr>
+            <th scope="col" class="px-6 py-3 whitespace-nowrap">To do</th>
+            <!-- <th scope="col" class="p-4">
+              
+              <div class="flex items-center">
+                
+                <input
+                  id="checkbox-all"
+                  type="checkbox"
+                  class="w-4 h-4 text-cyan-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-cyan-500 focus:ring-2 dark:bg-gray-700"
+                />
+                <label for="checkbox-all" class="sr-only">checkbox</label>
+              </div>
+            </th> -->
+            <th scope="col" class="px-6 py-3">Title</th>
+            <th scope="col" colspan="2" class="px-6 py-3">Description</th>
+            <th scope="col" class="px-6 py-3">Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr
+            *ngFor="let task of filteredTasks"
+            class="bg-slate-200 text-gray-950 border-b border-gray-200 hover:bg-gray-50"
+          >
+            <td class="p-4">
+              <div class="flex items-center justify-center">
+                <input
+                  [checked]="task.completed"
+                  (change)="toggleTask(task)"
+                  id="checkbox-table-1"
+                  type="checkbox"
+                  class="h-4 text-cyan-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-cyan-500 focus:ring-2"
+                />
+                <label for="checkbox-table-1" class="sr-only"></label>
+              </div>
+            </td>
+
+            <td
+              scope="row"
+              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+            >
+              {{ task.title }}
+            </td>
+
+            <td class="px-6 py-4 min-w-40" colspan="2">
+              {{ task.description }}
+            </td>
+
+            <td class="px-6 py-4 max-w-0.5 inline-flex">
+              <button class="m-1 cursor-pointer">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#000000"
+                >
+                  <path
+                    d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"
+                  />
+                </svg>
+              </button>
+              <button class="m-1 cursor-pointer">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#000000"
+                >
+                  <path
+                    d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+                  />
+                </svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- --------------------------------------------------- -->
   </div>
 
   <ng-template #noTasks>
-    <p class="cursor-default">Nothing here...</p>
+    <p class="cursor-default p-2 mt-1 text-xl bg-cyan-200 opacity-60">Nothing here...</p>
   </ng-template>
 </main>
-
 
 <app-toast></app-toast>
