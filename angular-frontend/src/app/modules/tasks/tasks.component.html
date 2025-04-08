@@ -3,7 +3,7 @@
     <h1 class="h-24 text-3xl p-1 flex-grow text-center content-center">
       Task Page
     </h1>
-  
+
     <button
       routerLink="/"
       class="mr-4 p-2 rounded-lg hover:bg-cyan-600 border-1 border-cyan-950"
@@ -11,25 +11,28 @@
       Back
     </button>
   </header>
-  
+
   <main class="p-2 flex flex-col min-h-3/4 max-w-4/5 mx-auto">
     <h2 class="text-xl font-bold text-cyan-800 my-5">Task List</h2>
-  
+
     <form class="space-y-2 mb-8" (ngSubmit)="addTask()">
-      <app-error-message [control]="title" fieldName="Title"></app-error-message>
-  
+      <app-error-message
+        [control]="title"
+        fieldName="Title"
+      ></app-error-message>
+
       <input
         type="text"
         [formControl]="title"
         placeholder="Title..."
         class="input-class"
       />
-  
+
       <app-error-message
         [control]="describe"
         fieldName="Describe"
       ></app-error-message>
-  
+
       <textarea
         [formControl]="describe"
         placeholder="Describe your task..."
@@ -38,7 +41,7 @@
         rows="4"
         required
       ></textarea>
-  
+
       <button
         type="submit"
         class="btn-cyan"
@@ -51,7 +54,7 @@
         Add
       </button>
     </form>
-  
+
     <div>
       <!-- Filtro para busqueda -->
       <form class="max-w-md mx-auto">
@@ -79,7 +82,7 @@
               />
             </svg>
           </div>
-  
+
           <input
             type="search"
             id="default-search"
@@ -90,7 +93,7 @@
           />
         </div>
       </form>
-  
+
       <!-- <ul *ngIf="filteredTasks.length > 0; else noTasks" class="mt-5">
         <li *ngFor="let task of filteredTasks" class="flex justify-between p-1">
           <span [class.completed]="task.completed" (click)="toggleTask(task)">
@@ -101,9 +104,9 @@
           </button>
         </li>
       </ul> -->
-  
+
       <!-------------------------TASKS LIST-------------------------------->
-  
+
       <div class="relative overflow-x-auto shadow-md sm:rounded-lg mb-4">
         <table
           *ngIf="filteredTasks.length > 0; else noTasks"
@@ -117,7 +120,7 @@
               <th scope="col" class="px-6 py-3">Action</th>
             </tr>
           </thead>
-  
+
           <tbody>
             <tr
               *ngFor="let task of filteredTasks"
@@ -135,18 +138,18 @@
                   <label for="checkbox-table-1" class="sr-only"></label>
                 </div>
               </td>
-  
+
               <td
                 scope="row"
                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
               >
                 {{ task.title }}
               </td>
-  
+
               <td class="px-6 py-4 min-w-40" colspan="2">
                 {{ task.description }}
               </td>
-  
+
               <td class="px-6 py-4 max-w-0.5 inline-flex">
                 <button class="m-1 cursor-pointer" (click)="updateTask(task)">
                   <svg
@@ -161,7 +164,10 @@
                     />
                   </svg>
                 </button>
-                <button class="m-1 cursor-pointer" (click)="deleteTask(task.id)">
+                <button
+                  class="m-1 cursor-pointer"
+                  (click)="deleteTask(task.id)"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     height="24px"
@@ -181,59 +187,59 @@
       </div>
       <!-- --------------------------------------------------- -->
     </div>
-  
+
     <ng-template #noTasks>
-      <p class="cursor-default p-2 mt-1 text-xl font-bold bg-cyan-800 opacity-60">
+      <p
+        class="cursor-default p-2 mt-1 text-xl font-bold bg-cyan-800 opacity-60"
+      >
         Nothing here...
       </p>
     </ng-template>
-  
-   
   </main>
 </div>
 
- <!-- Modal de edición -->
- <div
- *ngIf="taskBeingEdited"
- class="fixed inset-0  bg-opacity-50 flex items-center justify-center z-50"
+<!-- Modal de edición -->
+<div
+  *ngIf="taskBeingEdited"
+  class="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50"
 >
- <div
-   class="max-w-sm w-full p-6 bg-white border border-cyan-200 rounded-lg shadow-sm dark:bg-cyan-800 dark:border-cyan-700 mx-auto"
- >
-   <h5
-     class="mb-2 text-2xl font-bold tracking-tight text-cyan-900 dark:text-white"
-   >
-     Editar tarea
-   </h5>
+  <div
+    class="max-w-sm w-full p-6 bg-white border border-cyan-200 rounded-lg shadow-sm dark:bg-cyan-800 dark:border-cyan-700 mx-auto"
+  >
+    <h5
+      class="mb-2 text-2xl font-bold tracking-tight text-cyan-900 dark:text-white"
+    >
+      Editar tarea
+    </h5>
 
-   <input
-     [(ngModel)]="taskBeingEdited.title"
-     class="mb-3 w-full p-2 border border-cyan-300 rounded-lg text-cyan-900 dark:bg-cyan-700 dark:text-white dark:placeholder-cyan-300"
-     placeholder="Título"
-   />
+    <input
+      [(ngModel)]="taskBeingEdited.title"
+      class="mb-3 w-full p-2 border border-cyan-300 rounded-lg text-cyan-900 dark:bg-cyan-700 dark:text-white dark:placeholder-cyan-300"
+      placeholder="Título"
+    />
 
-   <textarea
-     [(ngModel)]="taskBeingEdited.description"
-     rows="4"
-     class="mb-4 w-full p-2 border border-cyan-300 rounded-lg text-cyan-900 dark:bg-cyan-700 dark:text-white dark:placeholder-cyan-300"
-     placeholder="Descripción"
-   ></textarea>
+    <textarea
+      [(ngModel)]="taskBeingEdited.description"
+      rows="4"
+      class="mb-4 w-full p-2 border border-cyan-300 rounded-lg text-cyan-900 dark:bg-cyan-700 dark:text-white dark:placeholder-cyan-300"
+      placeholder="Descripción"
+    ></textarea>
 
-   <div class="flex justify-end gap-2">
-     <button
-       (click)="cancelEdit()"
-       class="px-4 py-2 text-sm font-medium text-cyan-700 bg-white border border-cyan-300 rounded-lg hover:bg-cyan-50 dark:bg-cyan-600 dark:text-white dark:hover:bg-cyan-500"
-     >
-       Cancelar
-     </button>
-     <button
-       (click)="saveEdit()"
-       class="px-4 py-2 text-sm font-medium text-white bg-cyan-700 rounded-lg hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
-     >
-       Guardar
-     </button>
-   </div>
- </div>
+    <div class="flex justify-end gap-2">
+      <button
+        (click)="cancelEdit()"
+        class="px-4 py-2 text-sm font-medium text-cyan-700 bg-white border border-cyan-300 rounded-lg hover:bg-cyan-50 dark:bg-cyan-600 dark:text-white dark:hover:bg-cyan-500"
+      >
+        Cancelar
+      </button>
+      <button
+        (click)="saveEdit()"
+        class="px-4 py-2 text-sm font-medium text-white bg-cyan-700 rounded-lg hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
+      >
+        Guardar
+      </button>
+    </div>
+  </div>
 </div>
 
 <app-toast></app-toast>

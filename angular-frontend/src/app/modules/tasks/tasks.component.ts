@@ -116,7 +116,7 @@ export class TasksComponent implements OnInit {
 
   updateTask(task: Task): void {
     //clonamos la tarea
-    this.taskBeingEdited = { ...task };    
+    this.taskBeingEdited = { ...task };        
   }
 
   saveEdit(): void {
