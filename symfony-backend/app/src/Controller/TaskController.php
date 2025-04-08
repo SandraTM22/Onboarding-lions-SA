@@ -15,7 +15,8 @@ class TaskController extends AbstractController
     #[Route('', name: 'list_tasks', methods: ['GET'])]
     public function list(EntityManagerInterface $em): JsonResponse
     {
-        $tasks = $em->getRepository(Task::class)->findAll();
+        //$tasks = $em->getRepository(Task::class)->findAll();
+        $tasks = $em->getRepository(Task::class)->findBy([], ['createdAt' => 'ASC']);       
         $data = array_map(fn($task) => [
             'id' => $task->getId(),
             'title' => $task->getTitle(),
@@ -70,6 +71,9 @@ class TaskController extends AbstractController
         }
         if (isset($params['completed'])) {
             $task->setCompleted($params['completed']);
+        }
+        if (isset($params['description'])) {
+            $task->setDescription($params['description']);
         }
         $em->flush();
         return $this->json([

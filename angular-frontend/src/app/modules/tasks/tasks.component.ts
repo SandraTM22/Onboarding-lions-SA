@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { TaskService } from '../../shared/services/task-service.service';
 import { Task } from '../../shared/interfaces/task';
 import { RouterModule } from '@angular/router';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { ErrorMessageComponent } from './error-message/error-message.component';
 import { debounceTime, switchMap, map } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
@@ -17,12 +17,17 @@ import { ToastComponent } from '../../shared/toast/toast.component';
     ErrorMessageComponent,
     CommonModule,
     ToastComponent,
+    FormsModule
   ],
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.css'],
 })
 export class TasksComponent implements OnInit {
-  @ViewChild(ToastComponent) toast: ToastComponent | undefined; // Accede al componente del Toast y se inicializa en indefinido
+  // Accede al componente del Toast y se inicializa en indefinido
+  @ViewChild(ToastComponent) toast: ToastComponent | undefined; 
+
+  //Declaramos el modal para editar, que puede ser una terea o null. Se inicia en null
+  taskBeingEdited: Task | null = null;
 
   //Validaciones
   title = new FormControl('', [Validators.required, Validators.minLength(3)]);
@@ -108,6 +113,29 @@ export class TasksComponent implements OnInit {
         );
     });
   }
+
+  updateTask(task: Task): void {
+    //clonamos la tarea
+    this.taskBeingEdited = { ...task };    
+  }
+
+  saveEdit(): void {
+    //si taskBeingEdited no tienen ningun valor, entonces sal..
+    if (!this.taskBeingEdited) return;
+  
+    this.taskService.updateTask(this.taskBeingEdited).subscribe(() => {
+      this.loadTasks();
+      this.toast?.toastService.addToast('success', 'Task edited', 3000);
+      this.taskBeingEdited = null; // Cerramos el modal
+    });
+  }
+
+  cancelEdit(): void {
+    this.toast?.toastService.addToast('warning', 'The edition has been cancelled', 3000);
+    this.taskBeingEdited = null; // Cerramos el modal sin guardar
+  }
+
+
 
   resetForm(): void {
     this.title.reset();
